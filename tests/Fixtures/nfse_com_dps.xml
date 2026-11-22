@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NFSe xmlns="http://www.sped.fazenda.gov.br/nfse" versao="1.00">
+  <infNFSe Id="NFS4318705221234567800019900000000000012611000000001">
+    <xLocEmi>Sao Leopoldo</xLocEmi>
+    <xLocPrestacao>Sao Leopoldo</xLocPrestacao>
+    <nNFSe>1</nNFSe>
+    <cLocIncid>4318705</cLocIncid>
+    <xLocIncid>Sao Leopoldo</xLocIncid>
+    <xTribNac>Desenvolvimento de programas de computador sob encomenda</xTribNac>
+    <verAplic>1.00</verAplic>
+    <ambGer>2</ambGer>
+    <tpEmis>1</tpEmis>
+    <procEmi>1</procEmi>
+    <cStat>100</cStat>
+    <dhProc>2026-11-22T16:45:00-03:00</dhProc>
+    <nDFSe>1</nDFSe>
+    <emit>
+      <CNPJ>12345678000199</CNPJ>
+      <xNome>EXEMPLO TECNOLOGIA LTDA</xNome>
+      <enderNac>
+        <xLgr>Rua Independencia</xLgr>
+        <nro>500</nro>
+        <xBairro>Centro</xBairro>
+        <cMun>4318705</cMun>
+        <UF>RS</UF>
+        <CEP>93010000</CEP>
+      </enderNac>
+      <fone>5135900000</fone>
+      <email>fiscal@exemplotec.com.br</email>
+    </emit>
+    <valores>
+      <vBC>1500.00</vBC>
+      <pAliqAplic>2.00</pAliqAplic>
+      <vISSQN>30.00</vISSQN>
+      <vLiq>1500.00</vLiq>
+    </valores>
+    <DPS versao="1.00">
+      <infDPS Id="DPS431870521234567800019900001000000000000001">
+        <tpAmb>2</tpAmb>
+        <dhEmi>2026-11-22T16:44:50-03:00</dhEmi>
+        <verAplic>1.00</verAplic>
+        <serie>1</serie>
+        <nDPS>1</nDPS>
+        <dCompet>2026-11-22</dCompet>
+        <tpEmit>1</tpEmit>
+        <cLocEmi>4318705</cLocEmi>
+        <prest>
+          <CNPJ>12345678000199</CNPJ>
+          <regTrib>
+            <opSimpNac>3</opSimpNac>
+            <regApTribSN>1</regApTribSN>
+            <regEspTrib>0</regEspTrib>
+          </regTrib>
+        </prest>
+        <toma>
+          <CNPJ>98765432000110</CNPJ>
+          <xNome>CLIENTE COMERCIO LTDA</xNome>
+          <ender>
+            <endNac>
+              <cMun>4318705</cMun>
+              <CEP>93010110</CEP>
+            </endNac>
+            <xLgr>Av Joao Correa</xLgr>
+            <nro>1200</nro>
+            <xBairro>Centro</xBairro>
+          </ender>
+        </toma>
+        <serv>
+          <locPrest>
+            <cLocPrestacao>4318705</cLocPrestacao>
+          </locPrest>
+          <cServ>
+            <xDescServ>Desenvolvimento de sistema web sob encomenda</xDescServ>
+            <cNBS>115021000</cNBS>
+          </cServ>
+        </serv>
+        <valores>
+          <vServPrest>
+            <vServ>1500.00</vServ>
+          </vServPrest>
+          <trib>
+            <tribMun>
+              <tribISSQN>1</tribISSQN>
+              <tpRetISSQN>1</tpRetISSQN>
+            </tribMun>
+          </trib>
+        </valores>
+      </infDPS>
+    </DPS>
+  </infNFSe>
+</NFSe>

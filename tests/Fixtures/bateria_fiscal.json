@@ -1,0 +1,78 @@
+[
+    {
+        "pergunta": "Qual a situação cadastral do CNPJ 00.000.000/0001-91?",
+        "tools": ["consultar_cnpj"],
+        "contem": ["ativa"]
+    },
+    {
+        "pergunta": "A empresa de CNPJ 00000000000191 é optante do Simples Nacional?",
+        "tools": ["consultar_simples_nacional"],
+        "contem": ["nao"]
+    },
+    {
+        "pergunta": "Qual a descrição e o IPI do NCM 84713019?",
+        "tools": ["consultar_ncm"],
+        "contem": ["15"]
+    },
+    {
+        "pergunta": "Qual a descrição do NCM 61091000?",
+        "tools": ["consultar_ncm"],
+        "contem": ["algod"]
+    },
+    {
+        "pergunta": "Qual a descrição do CFOP 5102?",
+        "tools": ["consultar_cfop"],
+        "contem": ["terceiros"]
+    },
+    {
+        "pergunta": "O CFOP 6101 é de operação interestadual ou dentro do estado?",
+        "tools": ["consultar_cfop"],
+        "contem": ["interestadual"]
+    },
+    {
+        "pergunta": "O CST 000 é válido para o regime normal?",
+        "tools": ["validar_cst"],
+        "contem": ["valido"]
+    },
+    {
+        "pergunta": "O CSOSN 101 é válido para o Simples Nacional?",
+        "tools": ["validar_cst"],
+        "contem": ["valido"]
+    },
+    {
+        "pergunta": "Qual a descrição do CEST 0100100?",
+        "tools": ["consultar_cest"],
+        "contem": ["catalisador"]
+    },
+    {
+        "pergunta": "Qual a alíquota de ICMS de SP para RJ?",
+        "tools": ["consultar_aliquota_icms"],
+        "contem": ["12"]
+    },
+    {
+        "pergunta": "Qual a alíquota interestadual de ICMS de MG para BA?",
+        "tools": ["consultar_aliquota_icms"],
+        "contem": ["7"]
+    },
+    {
+        "pergunta": "Simule a Reforma Tributária para uma empresa de serviços com faturamento de R$ 1,2 milhão no Lucro Presumido",
+        "tools": ["simular_transicao_reforma_tributaria"],
+        "contem": ["2033"]
+    },
+    {
+        "pergunta": "Simule a Reforma Tributária para uma empresa de comércio com faturamento de R$ 5 milhões no Simples Nacional",
+        "tools": ["simular_transicao_reforma_tributaria"],
+        "contem": ["2026"]
+    },
+    {
+        "pergunta": "Qual a capital da França?",
+        "tools": [],
+        "contem": ["paris"]
+    },
+    {
+        "pergunta": "Qual a situação do CNPJ 12345?",
+        "tools": [],
+        "contem": ["completo"],
+        "nao_contem": ["ativa"]
+    }
+]

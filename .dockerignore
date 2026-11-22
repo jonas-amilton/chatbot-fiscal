@@ -1,0 +1,16 @@
+.git
+.env
+.env.*
+node_modules
+vendor
+public/build
+public/hot
+storage/*.key
+storage/app/dados
+storage/app/relatorios
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+bootstrap/cache/*.php
+*.log

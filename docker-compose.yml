@@ -1,0 +1,76 @@
+# Chatbot Fiscal: três serviços. O PostgreSQL continua no host (127.0.0.1:5432).
+#
+# Subir:   docker compose up -d --build
+# Logs:    docker compose logs -f app
+#
+# Decisões de rede:
+#   - app usa network_mode: host para alcançar o PostgreSQL do host (ele só escuta em localhost).
+#   - ollama e mcp-fiscal publicam portas apenas em 127.0.0.1 (nada exposto à internet).
+
+name: chatbot-fiscal
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    # GPU NVIDIA (requer NVIDIA Container Toolkit). Sem GPU, mantenha comentado:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+  mcp-fiscal:
+    build:
+      context: ../mcp-fiscal-brasil
+    command: ["mcp-fiscal-brasil", "--transport", "streamable-http", "--host", "0.0.0.0", "--port", "8000"]
+    restart: unless-stopped
+    environment:
+      HOST: "0.0.0.0"
+      PORT: "8000"
+    ports:
+      - "127.0.0.1:8002:8000"
+    healthcheck:
+      test: ["CMD", "python", "docker_healthcheck.py"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
+
+  app:
+    build:
+      context: .
+    restart: unless-stopped
+    network_mode: host
+    env_file: .env
+    environment:
+      LLM_BASE_URL: http://127.0.0.1:11434
+      MCP_FISCAL_TOOLS_URL: http://127.0.0.1:8002/mcp
+      APP_URL: http://127.0.0.1:8100
+    volumes:
+      # Relatórios da bateria ficam no host para consulta.
+      - ./storage/app/relatorios:/var/www/html/storage/app/relatorios
+      # Gabarito da bateria editável sem reconstruir a imagem.
+      - ./tests/Fixtures:/var/www/html/tests/Fixtures:ro
+    depends_on:
+      ollama:
+        condition: service_healthy
+      mcp-fiscal:
+        condition: service_healthy
+
+volumes:
+  ollama:
+    external: true
+    name: ollama
