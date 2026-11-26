@@ -1,22 +1,39 @@
-# Chatbot Fiscal: três serviços. O PostgreSQL continua no host (127.0.0.1:5432).
+# Chatbot Fiscal: stack completa no Docker (app, LLM, MCP e PostgreSQL).
 #
 # Subir:   docker compose up -d --build
 # Logs:    docker compose logs -f app
 #
-# Decisões de rede:
-#   - app usa network_mode: host para alcançar o PostgreSQL do host (ele só escuta em localhost).
-#   - ollama e mcp-fiscal publicam portas apenas em 127.0.0.1 (nada exposto à internet).
+# Rede:
+#   - ollama fica na rede interna "llm", sem porta publicada: só o app acessa a LLM.
+#   - PostgreSQL fica na rede padrão, sem porta no host.
+#   - app publica apenas 127.0.0.1:8100; mcp-fiscal, 127.0.0.1:8002 (depuração).
 
 name: chatbot-fiscal
 
 services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-chatbot_fiscal}
+      POSTGRES_USER: ${DB_USERNAME:-chatbot_fiscal}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?defina DB_PASSWORD no .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
   ollama:
     image: ollama/ollama:latest
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:11434:11434"
     volumes:
       - ollama:/root/.ollama
+    networks:
+      - llm
     healthcheck:
       test: ["CMD", "ollama", "list"]
       interval: 30s
@@ -53,24 +70,38 @@ services:
     build:
       context: .
     restart: unless-stopped
-    network_mode: host
     env_file: .env
     environment:
-      LLM_BASE_URL: http://127.0.0.1:11434
-      MCP_FISCAL_TOOLS_URL: http://127.0.0.1:8002/mcp
+      DB_HOST: db
+      DB_PORT: "5432"
+      LLM_BASE_URL: http://ollama:11434
+      MCP_FISCAL_TOOLS_URL: http://mcp-fiscal:8000/mcp
       APP_URL: http://127.0.0.1:8100
+    ports:
+      - "127.0.0.1:8100:8100"
+    networks:
+      - default
+      - llm
     volumes:
       # Relatórios da bateria ficam no host para consulta.
       - ./storage/app/relatorios:/var/www/html/storage/app/relatorios
       # Gabarito da bateria editável sem reconstruir a imagem.
       - ./tests/Fixtures:/var/www/html/tests/Fixtures:ro
     depends_on:
+      db:
+        condition: service_healthy
       ollama:
         condition: service_healthy
       mcp-fiscal:
         condition: service_healthy
 
 volumes:
+  # Volume externo: guarda o modelo e sobrevive a `docker compose down`.
+  # Crie uma vez com `docker volume create ollama`.
   ollama:
     external: true
     name: ollama
+  pgdata:
+
+networks:
+  llm:
